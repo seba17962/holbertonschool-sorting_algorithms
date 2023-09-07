@@ -9,8 +9,8 @@
 void insertion_sort_list(listint_t **list)
 {
 	listint_t *temp_1 = NULL;
-    listint_t *temp_2 = NULL;
-    listint_t * prev = NULL;
+	listint_t *temp_2 = NULL;
+	listint_t *prev = NULL;
 
 	if (list == NULL)
 		exit(98);
