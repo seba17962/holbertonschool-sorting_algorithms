@@ -1,62 +1,82 @@
 #include "sort.h"
 
 /**
-* swap - swaps two integers.
-* @i: integer 1 to swap.
-* @j: integer 2 to swap.
-*/
+ * swap - swap elements of an array
+ * * @array: array of integer
+ * @size: size of an array
+ * @a: int
+ * @b: int
+ */
 
-void swap(int *i, int *j)
+void swap(int *array, size_t size, int *a, int *b)
 {
-	int tmp = *i;
-	*i = *j;
-	*j = tmp;
-	printf_array(array, size);
-}
-
-/**
-* lomutoscheme - partition scheme for the quick sort algorithm.
-* @array: array to be sorted.
-* @size: size of the array.
-* @low: first element of the array.
-* @high: last element of the array.
-* Return: final position of pivot.
-*/
-
-int lomutoscheme(int *array, int low, int high)
-{
-int i = low - 1, j;
-int pivot = array[high];
-
-for (j = low; j <= high - 1; j++)
-{
-	if (array[j] < pivot)
+	if (a != b)
 	{
-		i++;
-		swap(&array[i], &array[j]);
+		int aux;
+
+		aux = *a;
+		*a = *b;
+		*b = aux;
+		print_array(array, size);
 	}
 }
-swap(&array[i + 1], &array[high]);
-return i + 1;
+
+/**
+ * partition - Lomuto partition
+ * @array: array of integer
+ * @min: lower int to compare
+ * @max: higer int to compare
+ * @size: size of an array
+ *
+ * Return: integer
+*/
+
+int partition(int *array, int min, int max, size_t size)
+{
+	int piv = array[max];
+	int j = min - 1, i;
+
+	for (i = min; i <= max - 1; i++)
+	{
+		if (array[i] <= piv)
+		{
+			j++;
+			swap(array, size, &array[i], &array[j]);
+		}
+	}
+	swap(array, size, &array[j + 1], &array[max]);
+	return (j + 1);
 }
 
 /**
- * quick_sort - sorts in ascending order using the Quick sort algorithm.
- * @array: array to sort.
- * @size: size of the array.
+ * quick_recursive - recursive function
+ * @array: array of integers
+ * @min: int
+ * @max: int
+ * @size: size of an array
+*/
+
+void quick_recursive(int *array, int min, int max, size_t size)
+{
+	int a;
+
+	if (min < max)
+	{
+		a = partition(array, min, max, size);
+		quick_recursive(array, min, a - 1, size);
+		quick_recursive(array, a + 1, max, size);
+	}
+}
+
+/**
+ * quick_sort - Algorithm to sort an array of int
+ * @array: The array of integers
+ * @size: Size of an array
 */
 
 void quick_sort(int *array, size_t size)
 {
-int low = 0, high = size - 1, index;
-
-if (array == NULL || size < 2)
-	return;
-if (low < high)
-{
-	index = lomutoscheme(array, low, high);
-
-	quick_sort(array, index);
-	quick_sort(array + index + 1, high - index);
-}	
+	if (!array || size == 0)
+		return;
+	quick_recursive(array, 0, size - 1, size);
 }
